@@ -1,5 +1,6 @@
 <template>
   <div>
+    in new page
     <GoogleLogin
       :params="params"
       :renderParams="renderParams"
