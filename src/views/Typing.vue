@@ -1,23 +1,19 @@
 <template>
   <div>
-    <div class="relative">
+    <div class="relative  text-3xl">
       <div
         id="inputDiv"
         contenteditable="true"
         v-on:input="checkValue()"
-        class="absolute text-transparent"
+        class="absolute text-transparent focus:outline-none text-left h-screen w-screen"
         autofocus
-      >{{test}}</div>
-      <dir id="quoteDisplay" class="absolute m-0 p-0">
-        <span v-for="word in words" :key="word.id" :id="word.id">{{word}}</span>
-      </dir>
+      ></div>
+      <div id="quoteDisplay" class="absolute text-left">
+        <span v-for="word in words" :key="word.id" :id="word.id">{{
+          word
+        }}</span>
+      </div>
     </div>
-    <!-- <textarea
-      id="quoteInput"
-      class="quote-input"
-      v-model="ansInput"
-      v-on:input="checkValue()"
-    ></textarea> -->
   </div>
 </template>
 
@@ -31,17 +27,17 @@ export default {
       ans: [],
       ansInput: "",
 
-      test: ""
+      test: "",
     };
   },
   created() {
     axios
       .get(`http://api.quotable.io/random`)
-      .then(response => {
+      .then((response) => {
         this.words = response.data;
         this.words = this.splitSpace(this.words.content);
       })
-      .catch(e => {
+      .catch((e) => {
         this.errors.push(e);
       });
   },
@@ -53,25 +49,43 @@ export default {
       const spanTexts = document
         .getElementById("quoteDisplay")
         .querySelectorAll("span");
-      const ansInput = document.getElementById("inputDiv").textContent;
-      this.ans = ansInput.split("");
+      this.ans = document.getElementById("inputDiv").textContent.split("");
+      if (this.ans == null) {
+        len = 0;
+      } else {
+        var len = this.ans.length;
+      }
+      console.log(len);
+
       this.words.forEach((x, index) => {
+        spanTexts[len].classList.add("animate-pulse-faster", "bg-blue-200");
         if (this.ans[index] == null) {
-          spanTexts[index].classList.remove("text-green-800");
-          spanTexts[index].classList.remove("text-red-700");
+          spanTexts[index].classList.remove(
+            "animate-pulse-faster",
+            "bg-blue-200"
+          );
+          spanTexts[index].classList.remove("text-green-800", "bg-green-300");
+          spanTexts[index].classList.remove("text-red-700", "bg-red-400");
         } else if (this.ans[index] === this.words[index]) {
-          spanTexts[index].classList.remove("text-red-700");
-          spanTexts[index].classList.add("text-green-800");
+          spanTexts[len - 1].classList.remove(
+            "animate-pulse-faster",
+            "bg-blue-200"
+          );
+          spanTexts[index].classList.remove("text-red-700", "bg-red-400");
+          spanTexts[index].classList.add("text-green-800", "bg-green-300");
         } else {
-          spanTexts[index].classList.remove("text-green-800");
-          spanTexts[index].classList.add("text-red-700");
+          spanTexts[len - 1].classList.remove(
+            "animate-pulse-faster",
+            "bg-blue-200"
+          );
+          spanTexts[index].classList.remove("text-green-800", "bg-green-300");
+          spanTexts[index].classList.add("text-red-700", "bg-red-400");
         }
       });
-    }
+    },
   },
-  computed: {}
+  computed: {},
 };
 </script>
 
-<style>
-</style>
+<style></style>

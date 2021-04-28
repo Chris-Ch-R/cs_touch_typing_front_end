@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import NewPage from '../views/NewPage.vue'
-import Typing from '../views/typing.vue'
+import Typing from '../views/Typing.vue'
 
 Vue.use(VueRouter)
 
