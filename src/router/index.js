@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import NewPage from '../views/NewPage.vue'
+import Typing from '../views/typing.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     path: '/newpage',
     name: 'newpage',
     component: NewPage
+  },
+  {
+    path: '/typing',
+    name: 'typing',
+    component: Typing
   },
   {
     path: '/about',

@@ -1,25 +1,23 @@
 <template>
   <div>
-    <div class="timer" id="timer"></div>
-    <div class="container">
-      <div class="quote-display" id="quoteDisplay">
-        <span v-for="word in words" :key="word.id">{{ word }}</span>
-      </div>
-      <!-- <div style="position:relative;"> 
-        <div id="btext" style="color:transparent;" contenteditable="true"></div>
-        <div id="dtext" contenteditable="true"></div>
-        <div style="background-color: white;color: rgba(0,0,0,0.3);" contenteditable="true">
-          {{posts.content}}
-        </div>
-      </div> -->
-      <textarea
-        id="quoteInput"
-        class="quote-input"
+    <div class="relative">
+      <div
+        id="inputDiv"
+        contenteditable="true"
+        v-on:input="checkValue()"
+        class="absolute text-transparent"
         autofocus
-        v-model="ansInput"
-        v-on:input="check"
-      ></textarea>
+      >{{test}}</div>
+      <dir id="quoteDisplay" class="absolute m-0 p-0">
+        <span v-for="word in words" :key="word.id" :id="word.id">{{word}}</span>
+      </dir>
     </div>
+    <!-- <textarea
+      id="quoteInput"
+      class="quote-input"
+      v-model="ansInput"
+      v-on:input="checkValue()"
+    ></textarea> -->
   </div>
 </template>
 
@@ -32,132 +30,48 @@ export default {
       words: [],
       ans: [],
       ansInput: "",
-      posts: [],
-      errors: [],
+
+      test: ""
     };
   },
   created() {
     axios
-      .get("http://api.quotable.io/random")
-      .then((response) => {
-        this.posts = response.data;
-        this.splitWords();
+      .get(`http://api.quotable.io/random`)
+      .then(response => {
+        this.words = response.data;
+        this.words = this.splitSpace(this.words.content);
       })
-      .catch((e) => {
+      .catch(e => {
         this.errors.push(e);
       });
   },
   methods: {
-    splitWords() {
-      this.words = this.posts.content.split("");
+    splitSpace(arr) {
+      return arr.split("");
     },
-    check() {
-      const spanText = document
+    checkValue() {
+      const spanTexts = document
         .getElementById("quoteDisplay")
         .querySelectorAll("span");
-
-      this.ans = this.ansInput.split("");
+      const ansInput = document.getElementById("inputDiv").textContent;
+      this.ans = ansInput.split("");
       this.words.forEach((x, index) => {
         if (this.ans[index] == null) {
-          spanText[index].classList.remove("correct");
-          spanText[index].classList.remove("incorrect");
+          spanTexts[index].classList.remove("text-green-800");
+          spanTexts[index].classList.remove("text-red-700");
         } else if (this.ans[index] === this.words[index]) {
-          spanText[index].classList.add("correct");
-          spanText[index].classList.remove("incorrect");
-          console.log("correct");
+          spanTexts[index].classList.remove("text-red-700");
+          spanTexts[index].classList.add("text-green-800");
         } else {
-          spanText[index].classList.remove("correct");
-          spanText[index].classList.add("incorrect");
-          console.log("incorrect");
+          spanTexts[index].classList.remove("text-green-800");
+          spanTexts[index].classList.add("text-red-700");
         }
       });
-    },
+    }
   },
+  computed: {}
 };
 </script>
 
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  background-color: #1e0555;
-}
-
-body,
-.quote-input {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-}
-
-.container {
-  background-color: #f0db4f;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  width: 700px;
-  max-width: 90%;
-}
-
-.timer {
-  position: absolute;
-  top: 2rem;
-  font-size: 3rem;
-  color: #f0db4f;
-  font-weight: bold;
-}
-
-.quote-display {
-  margin-bottom: 1rem;
-  margin-left: calc(1rem + 2px);
-  margin-right: calc(1rem + 2px);
-}
-
-.quote-input {
-  background-color: transparent;
-  border: 2px solid #a1922e;
-  outline: none;
-  width: 100%;
-  height: 8rem;
-  margin: auto;
-  resize: none;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-}
-
-.quote-input:focus {
-  border-color: black;
-}
-
-.correct {
-  color: green;
-}
-
-.incorrect {
-  color: red;
-  text-decoration: underline;
-}
-
-.captcha {
-  display: inline-block;
-  padding: 0.2em;
-  background-color: white;
-  border: 1px solid #A9A9A9;
-}
-
-.placeholder {
-  color: #A9A9A9;
-}
-
-.answer {
-  padding: 0;
-  background-color: transparent;
-  border: none;
-  outline: none;
-}
 </style>
