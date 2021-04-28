@@ -46,6 +46,7 @@ export default {
       return arr.split("");
     },
     checkValue() {
+      // สมมุติว่าเสร็จ Algorithm แล้ว
       const spanTexts = document
         .getElementById("quoteDisplay")
         .querySelectorAll("span");
@@ -55,8 +56,8 @@ export default {
       } else {
         var len = this.ans.length;
       }
-      console.log(len);
-
+      console.log("....");
+    
       this.words.forEach((x, index) => {
         spanTexts[len].classList.add("animate-pulse-faster", "bg-blue-200");
         if (this.ans[index] == null) {
