@@ -1,18 +1,29 @@
 <template>
   <div>
-    <div class="relative  text-3xl">
+    <div class="relative font-mono text-3xl">
+      
+      <!-- input Div ( h--screen and w-screen can delete ) -->
       <div
         id="inputDiv"
         contenteditable="true"
-        v-on:input="checkValue()"
+        v-on:keydown.delete="pressDelete"
+        v-on:keypress="checkValue"
         class="absolute text-transparent focus:outline-none text-left h-screen w-screen"
         autofocus
       ></div>
-      <div id="quoteDisplay" class="absolute text-left">
-        <span v-for="word in words" :key="word.id" :id="word.id">{{
-          word
-        }}</span>
+
+      <!-- display origin words ( text-left can't be delete )-->
+      <div id="display" class="absolute text-left text-gray-400">
+        <span v-for="word in words" :key="word.id">{{word}}</span>
       </div>
+
+      <!-- display curcer only curcer ( text-left can't be delete )-->
+      <div class="absolute text-left text-transparent">
+        <span>{{words.join('').substr(0,current)}}</span>
+        <span class="animate-pulse-faster bg-blue-200 text-gray-400">{{words[current]}}</span>
+        <span>{{words.join('').substr(current+1,words.length)}}</span>
+      </div>
+
     </div>
   </div>
 </template>
@@ -24,20 +35,17 @@ export default {
   data() {
     return {
       words: [],
-      ans: [],
-      ansInput: "",
-
-      test: "",
+      current: 0,
     };
   },
   created() {
     axios
       .get(`http://api.quotable.io/random`)
-      .then((response) => {
+      .then(response => {
         this.words = response.data;
         this.words = this.splitSpace(this.words.content);
       })
-      .catch((e) => {
+      .catch(e => {
         this.errors.push(e);
       });
   },
@@ -45,47 +53,29 @@ export default {
     splitSpace(arr) {
       return arr.split("");
     },
-    checkValue() {
-      // สมมุติว่าเสร็จ Algorithm แล้ว
-      const spanTexts = document
-        .getElementById("quoteDisplay")
-        .querySelectorAll("span");
-      this.ans = document.getElementById("inputDiv").textContent.split("");
-      if (this.ans == null) {
-        len = 0;
-      } else {
-        var len = this.ans.length;
+
+    pressDelete(){
+      if(this.current > 0){
+        document.getElementById("display").querySelectorAll("span")[this.current - 1].classList.remove("text-green-800", "bg-green-300","text-red-800", "bg-red-300");
+        this.current--;
       }
-      console.log("....");
-    
-      this.words.forEach((x, index) => {
-        spanTexts[len].classList.add("animate-pulse-faster", "bg-blue-200");
-        if (this.ans[index] == null) {
-          spanTexts[index].classList.remove(
-            "animate-pulse-faster",
-            "bg-blue-200"
-          );
-          spanTexts[index].classList.remove("text-green-800", "bg-green-300");
-          spanTexts[index].classList.remove("text-red-700", "bg-red-400");
-        } else if (this.ans[index] === this.words[index]) {
-          spanTexts[len - 1].classList.remove(
-            "animate-pulse-faster",
-            "bg-blue-200"
-          );
-          spanTexts[index].classList.remove("text-red-700", "bg-red-400");
-          spanTexts[index].classList.add("text-green-800", "bg-green-300");
-        } else {
-          spanTexts[len - 1].classList.remove(
-            "animate-pulse-faster",
-            "bg-blue-200"
-          );
-          spanTexts[index].classList.remove("text-green-800", "bg-green-300");
-          spanTexts[index].classList.add("text-red-700", "bg-red-400");
-        }
-      });
     },
+
+    checkValue(event) {
+      const spanTexts = document.getElementById("display").querySelectorAll("span");
+      if (this.current < this.words.length){
+        if(event.key === this.words[this.current]){
+          spanTexts[this.current].classList.add("text-green-800", "bg-green-300");
+        }
+        else{
+          spanTexts[this.current].classList.add("text-red-800", "bg-red-300");
+        }
+        this.current++;
+      }
+    }
+
   },
-  computed: {},
+  computed: {}
 };
 </script>
 
