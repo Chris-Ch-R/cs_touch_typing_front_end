@@ -7,6 +7,7 @@
     <div v-for="post in posts" :key="post.id">
         <div>{{post.p_file}}</div>
     </div>
+    <router-link to="/">go to home</router-link>
   </div>
 </template>
 

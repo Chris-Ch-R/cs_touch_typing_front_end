@@ -34,10 +34,11 @@ export default {
   },
   methods: {
     onSuccess(googleUser) {
-      console.log(googleUser);
-
-      // This only gets the user information: id, name, imageUrl and email
-      console.log(googleUser.getBasicProfile());
+      this.$store.dispatch('login', {
+        name: googleUser.getBasicProfile().getName(),
+        imageUrl: googleUser.getBasicProfile().getImageUrl()
+      })
+      this.$router.push('/')
     },
     onFailure(errorData) {
       console.log("ErrorMessage:" + errorData);
