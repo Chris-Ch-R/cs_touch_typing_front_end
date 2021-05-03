@@ -1,13 +1,13 @@
 <template>
   <div>
+    <narbar />
     <typing />
-    <button class="p-20" @click="logout">log out</button>
   </div>
 </template>
 
 <script>
 import typing from "../components/Typing";
-
+import narbar from "../components/Navbar"
 export default {
   data() {
     return {
@@ -15,16 +15,11 @@ export default {
     };
   },
   components: {
-    typing
+    typing,
+    narbar
   },
   mounted() {},
-  methods: {
-    logout() {
-      this.$store.dispatch("logout").then(() => {
-        this.$router.push("/login");
-      });
-    }
-  }
+  methods: {}
 };
 </script>
 
