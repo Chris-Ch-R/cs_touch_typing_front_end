@@ -7,6 +7,9 @@
         v-on:keydown.delete="pressDelete"
         v-on:keypress="typing"
         class="absolute focus:outline-none text-transparent z-50 w-full"
+        spellcheck="false"
+        autocomplete="off"
+        autocorrect="off"
         autofocus
       ></div>
 
@@ -27,7 +30,6 @@
 
 <script>
 import axios from "axios";
-
 export default {
   data() {
     return {
@@ -35,7 +37,6 @@ export default {
       currentCursor: 0,
       allTypedEntries: 0,
       uncorrectedErrors: 0,
-
       timer: 0,
       isTimeRunning: true,
     };
@@ -55,7 +56,6 @@ export default {
     splitSpace(arr) {
       return arr.split("");
     },
-
     pressDelete(){
       if(this.currentCursor > 0){
         document.getElementById("display")
@@ -64,7 +64,6 @@ export default {
         this.currentCursor--;
       }
     },
-
     typing(event) {
       if (this.allTypedEntries == 0){
         this.countUpTimer();
@@ -82,11 +81,9 @@ export default {
           this.uncorrectedErrors++;
         }
         this.allTypedEntries++;
-
         this.currentCursor++;
       }
     },
-
     countUpTimer() {
       if (this.isTimeRunning){
         setTimeout(() => {
@@ -95,7 +92,6 @@ export default {
         }, 1000)
       }
     }
-
   },
 };
 </script>
