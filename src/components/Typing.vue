@@ -70,6 +70,7 @@ export default {
       }
       if (this.currentCursor == this.words.length){
         this.isTimeRunning = false
+        this.savedScore();
       }
       if (this.currentCursor < this.words.length){
         const spanTexts = document.getElementById("display").querySelectorAll("span");
@@ -91,6 +92,22 @@ export default {
             this.countUpTimer()
         }, 1000)
       }
+    },
+    savedScore(){
+
+      console.log("saved func");
+      axios.post('http://127.0.0.1:8000/api/add', 
+      {
+        "name": "test",
+        "allTypedEntries": this.allTypedEntries,
+        "uncorrectedErrors": this.uncorrectedErrors,
+        "countTime": this.timer
+      })
+           .then(
+             console.log("success")
+           ).catch(e => {
+             console.log(e);
+            });
     }
   },
 };
