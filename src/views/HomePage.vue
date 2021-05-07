@@ -1,25 +1,13 @@
 <template>
   <div>
-    <narbar />
-    <typing />
+    <h1 class="text-center text-7xl font-mono">WELCOME TO CS TOUCH TYPING</h1>
   </div>
 </template>
 
 <script>
-import typing from "../components/Typing";
-import narbar from "../components/Navbar"
+
 export default {
-  data() {
-    return {
-      test: 0
-    };
-  },
-  components: {
-    typing,
-    narbar
-  },
-  mounted() {},
-  methods: {}
+
 };
 </script>
 

@@ -5,6 +5,7 @@ import Router from "vue-router";
 import HomePage from "../views/HomePage.vue";
 import LoginPage from "../views/LoginPage.vue";
 import AboutPage from "../views/AboutPage.vue";
+import Paragraph from "../views/Paragraph.vue"
 
 Vue.use(Router);
 
@@ -13,6 +14,9 @@ const routes = [
     path: "/login",
     name: "Login",
     component: LoginPage,
+    meta: {
+      layout: 'blank'
+    },
   },
   {
     path: "/",
@@ -24,6 +28,11 @@ const routes = [
     name: "About",
     component: AboutPage,
   },
+  {
+    path: "/paragraph/:paragraph_id",
+    name: "Paragraph",
+    component: Paragraph,
+  }
 ];
 
 const router = new Router({

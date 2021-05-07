@@ -26,12 +26,19 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
+  props: {
+    words: {
+      type: Array,
+      requied: true,
+      default: () => {
+        return ["T", "h", "i", "s", " ", "i", "s", " ", "t", "h", "e", " ", "d", "e", "f", "a", "u", "l", "t", " ", "t", "e", "x", "t"]
+      }
+    }
+  },
   data() {
     return {
-      words: [],
       currentCursor: 0,
       allTypedEntries: 0,
       uncorrectedErrors: 0,
@@ -40,22 +47,7 @@ export default {
       isTimeRunning: true,
     };
   },
-  created() {
-    axios
-      .get(`http://api.quotable.io/random`)
-      .then(response => {
-        this.words = response.data;
-        this.words = this.splitSpace(this.words.content);
-      })
-      .catch(e => {
-        this.errors.push(e);
-      });
-  },
   methods: {
-    splitSpace(arr) {
-      return arr.split("");
-    },
-
     pressDelete(){
       if(this.currentCursor > 0){
         document.getElementById("display")

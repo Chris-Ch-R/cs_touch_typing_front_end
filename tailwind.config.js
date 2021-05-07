@@ -29,7 +29,7 @@ module.exports = {
         },
         animation: {
           "pulse-faster": "pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-          'fade-in-down': 'fade-in-down 0.5s ease-out',
+          'fade-in-down': 'fade-in-down 0.3s ease-out',
         }
       },
     },
